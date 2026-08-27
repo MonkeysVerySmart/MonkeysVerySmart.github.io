@@ -58,6 +58,16 @@ body {
 .intro h1 { font-size: clamp(2.5rem, 8vw, 4rem); }
 .intro p { line-height: 1.7; max-width: 720px; }
 
+.writeup-image {
+  display: block;
+  height: auto;
+  margin: 24px 0;
+  max-width: 100%;
+}
+
+.writeup-figure { margin: 28px 0; }
+.writeup-figure figcaption { color: #c0b8c9; font-size: .85rem; }
+
 hr {
   border: 0;
   border-top: 3px double #85749e;
