@@ -54,7 +54,6 @@ function renderProject(project) {
                 ${project.thumbnailUrl
                     ? `<img src="${project.thumbnailUrl}" alt="${escapeHtml(project.title)} thumbnail">`
                     : `<div class="preview-placeholder" aria-hidden="true">ROBLOX</div>`}
-                <span class="preview-label">Roblox experience</span>
             </a>
             <div class="game-info">
                 <h3>${escapeHtml(project.title)}</h3>
