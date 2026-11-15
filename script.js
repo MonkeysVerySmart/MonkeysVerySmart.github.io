@@ -49,7 +49,8 @@ function renderProject(project) {
     const robloxUrl = `https://www.roblox.com/games/${project.placeId}`;
 
     return `
-        <article class="game-card">
+        <article class="game-card win-window">
+            <div class="win-titlebar"><span>${escapeHtml(project.title)}.rbxl</span><div class="win-controls"><span>_</span><span>□</span><span>×</span></div></div>
             <a class="game-preview" href="${robloxUrl}" target="_blank" rel="noopener noreferrer">
                 ${project.thumbnailUrl
                     ? `<img src="${project.thumbnailUrl}" alt="${escapeHtml(project.title)} thumbnail">`
