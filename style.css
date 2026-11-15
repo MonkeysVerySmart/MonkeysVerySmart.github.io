@@ -7,18 +7,109 @@
 body {
    margin: 0;
    padding: 16px;
-    background:
-      radial-gradient(ellipse 60% 14% at 50% 32%, transparent 88%, rgba(88, 101, 242, .16) 94%, transparent 100%),
-      radial-gradient(circle at 50% 32%, #ffffff 0%, rgba(255, 255, 255, .9) 18%, rgba(255, 255, 255, 0) 55%),
-      repeating-conic-gradient(from 0deg at 50% 32%, rgba(139, 92, 246, .07) 0deg 1.5deg, transparent 1.5deg 7deg),
-      linear-gradient(#ffffff, #eef0ff 45%, #e2dbff);
-    background-attachment: fixed;
+    background: linear-gradient(#ffffff, #eef0ff 45%, #e2dbff);
     color: #1e1b4b;
     font-family: "Zekton";
    min-height: 100vh;
     animation: fadeInAnimation ease 0.33s;
    animation-iteration-count: 1;
     animation-fill-mode: forwards;
+}
+
+body::before,
+body::after,
+html::before {
+  content: "";
+  position: fixed;
+  left: 50%;
+  top: 32%;
+  aspect-ratio: 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  width: 110vmax;
+  background:
+    radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, .95) 8%, rgba(237, 233, 254, .5) 22%, rgba(255, 255, 255, 0) 45%),
+    repeating-conic-gradient(rgba(139, 92, 246, .09) 0deg 1.2deg, transparent 1.2deg 6deg, rgba(88, 101, 242, .06) 6deg 6.6deg, transparent 6.6deg 11deg);
+  -webkit-mask: radial-gradient(closest-side, #000 15%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 15%, transparent 100%);
+  will-change: transform, opacity;
+  -webkit-animation: rays-spin 240s linear infinite, rays-breathe 7s ease-in-out infinite alternate;
+  animation: rays-spin 240s linear infinite, rays-breathe 7s ease-in-out infinite alternate;
+}
+
+body::after,
+html::before {
+  background: conic-gradient(rgba(88, 101, 242, .3) 0deg 40deg, rgba(88, 101, 242, .08) 40deg 52deg, rgba(139, 92, 246, .26) 52deg 118deg, transparent 118deg 126deg, rgba(88, 101, 242, .22) 126deg 200deg, rgba(167, 139, 250, .1) 200deg 214deg, rgba(88, 101, 242, .28) 214deg 298deg, transparent 298deg 304deg, rgba(139, 92, 246, .2) 304deg 360deg);
+  will-change: transform;
+}
+
+body::after {
+  width: 135vw;
+  -webkit-mask: radial-gradient(closest-side, transparent 70%, #000 70.6%, #000 71.4%, transparent 72%, transparent 76%, #000 83%, #000 93%, transparent 100%);
+  mask: radial-gradient(closest-side, transparent 70%, #000 70.6%, #000 71.4%, transparent 72%, transparent 76%, #000 83%, #000 93%, transparent 100%);
+  -webkit-animation: ring-spin 90s linear infinite;
+  animation: ring-spin 90s linear infinite;
+}
+
+html::before {
+  width: 70vw;
+  opacity: .7;
+  -webkit-mask: radial-gradient(closest-side, transparent 82%, #000 88%, #000 94%, transparent 100%);
+  mask: radial-gradient(closest-side, transparent 82%, #000 88%, #000 94%, transparent 100%);
+  -webkit-animation: ring-spin-reverse 60s linear infinite;
+  animation: ring-spin-reverse 60s linear infinite;
+}
+
+@keyframes rays-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes rays-breathe {
+  from { opacity: .65; }
+  to { opacity: 1; }
+}
+
+@keyframes ring-spin {
+  from { transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(78deg) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(78deg) rotateZ(360deg); }
+}
+
+@keyframes ring-spin-reverse {
+  from { transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(72deg) rotateZ(360deg); }
+  to { transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(72deg) rotateZ(0deg); }
+}
+
+@-webkit-keyframes rays-spin {
+  from { -webkit-transform: translate(-50%, -50%) rotate(0deg); }
+  to { -webkit-transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@-webkit-keyframes rays-breathe {
+  from { opacity: .65; }
+  to { opacity: 1; }
+}
+
+@-webkit-keyframes ring-spin {
+  from { -webkit-transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(78deg) rotateZ(0deg); }
+  to { -webkit-transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(78deg) rotateZ(360deg); }
+}
+
+@-webkit-keyframes ring-spin-reverse {
+  from { -webkit-transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(72deg) rotateZ(360deg); }
+  to { -webkit-transform: translate(-50%, -50%) rotate(-5deg) perspective(6000px) rotateX(72deg) rotateZ(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  html::before {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+  }
 }
 
 a { color: #5865f2; }
