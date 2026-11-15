@@ -143,6 +143,7 @@ a:visited { color: #7c3aed; }
 }
 
 .intro,
+.projects,
 .roblox-work {
   width: min(100%, 860px);
   margin: 0 auto;
@@ -174,6 +175,7 @@ hr {
   margin: 18px 0 26px;
 }
 
+.projects,
 .roblox-work { margin-top: 72px; }
 
 .section-heading {
@@ -234,14 +236,37 @@ hr {
   font-size: .7rem;
   line-height: 1;
   box-shadow: inset -1px -1px #2e1065, inset 1px 1px #ffffff, inset -2px -2px #8b7fb8, inset 2px 2px #f7f5ff;
+  cursor: default;
+  user-select: none;
+  transition: background-color 60ms, color 60ms;
 }
+
+.win-controls span:hover { background: #f7f5ff; }
+.win-controls span:last-child:hover { background: #e0443e; color: #ffffff; }
+
+.win-controls span:active {
+  background: #c9c1ec;
+  box-shadow: inset 1px 1px #2e1065, inset -1px -1px #ffffff, inset 2px 2px #8b7fb8, inset -2px -2px #f7f5ff;
+}
+
+.win-controls span:last-child:active { background: #a8231e; color: #ffffff; }
 
 .win-menu {
   display: flex;
-  gap: 14px;
-  padding: 4px 6px;
+  gap: 2px;
+  padding: 2px 2px;
   font-size: .8rem;
 }
+
+.win-menu span {
+  padding: 2px 6px;
+  cursor: default;
+  user-select: none;
+  transition: background-color 60ms, color 60ms;
+}
+
+.win-menu span:hover { background: #3b2ccf; color: #ffffff; }
+.win-menu span:active { background: #2e1065; color: #ffffff; }
 
 .win-body {
   margin: 0;
@@ -304,6 +329,52 @@ ul.win-body { padding-left: 36px; line-height: 1.7; }
   padding: 5px 7px;
   position: absolute;
   text-transform: uppercase;
+}
+
+.project-card { display: flex; flex-direction: column; }
+
+.project-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 14px 14px 16px;
+}
+
+.project-body h3 { margin: 0 0 6px; font-size: 1.2rem; color: #1e1b4b; }
+.project-body p { color: #5b5480; font-size: .9rem; line-height: 1.5; margin: 0 0 14px; }
+.project-body .project-badge { color: #7c3aed; font-size: .8rem; margin-bottom: 10px; }
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: auto 0 16px;
+  padding: 0;
+}
+
+.project-tags li {
+  padding: 2px 8px;
+  background: #ece8fb;
+  border: 1px solid #a78bfa;
+  color: #3b2ccf;
+  font-size: .75rem;
+}
+
+.win-progress {
+  align-self: stretch;
+  height: 16px;
+  margin: 0 0 14px;
+  padding: 2px;
+  background: #ffffff;
+  box-shadow: inset 1px 1px #8b7fb8, inset -1px -1px #ffffff, inset 2px 2px #2e1065, inset -2px -2px #ece8fb;
+}
+
+.win-progress span {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, #8b5cf6 0 8px, transparent 8px 10px);
 }
 
 .game-info { padding: 14px 12px 12px; }
