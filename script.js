@@ -1,3 +1,106 @@
+(function initBackgroundParticles() {
+    // Hide the old CSS rays/rings background (defined in style.css)
+    const override = document.createElement("style");
+    override.textContent = "body::before, body::after, html::before { content: none !important; }";
+    document.head.appendChild(override);
+
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;";
+    document.body.prepend(canvas);
+    const ctx = canvas.getContext("2d");
+
+    // Soft glowing dots in the site's purple/blue palette, pre-rendered once
+    const palette = ["139, 92, 246", "88, 101, 242", "167, 139, 250", "196, 181, 253"];
+    const sprites = palette.map((rgb) => {
+        const sprite = document.createElement("canvas");
+        sprite.width = sprite.height = 64;
+        const sctx = sprite.getContext("2d");
+        const glow = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        glow.addColorStop(0, `rgba(${rgb}, 1)`);
+        glow.addColorStop(0.2, `rgba(${rgb}, .6)`);
+        glow.addColorStop(1, `rgba(${rgb}, 0)`);
+        sctx.fillStyle = glow;
+        sctx.fillRect(0, 0, 64, 64);
+        return sprite;
+    });
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const random = (min, max) => min + Math.random() * (max - min);
+    let width = 0;
+    let height = 0;
+    let particles = [];
+
+    function createParticle(y = random(0, height)) {
+        return {
+            x: random(0, width),
+            y,
+            size: random(5, 18),
+            speed: random(5, 16),
+            driftAmount: random(4, 16),
+            driftSpeed: random(0.1, 0.35),
+            twinkleSpeed: random(0.4, 1.2),
+            phase: random(0, Math.PI * 2),
+            alpha: random(0.3, 0.75),
+            sprite: sprites[Math.floor(Math.random() * sprites.length)]
+        };
+    }
+
+    function resize() {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        // Keep existing particles in proportionally the same spot
+        particles.forEach((particle) => {
+            particle.x *= newWidth / (width || newWidth);
+            particle.y *= newHeight / (height || newHeight);
+        });
+
+        width = newWidth;
+        height = newHeight;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const target = Math.round(Math.min(60, Math.max(20, (width * height) / 26000)));
+        while (particles.length < target) particles.push(createParticle());
+        particles.length = target;
+    }
+
+    function draw(time) {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach((particle) => {
+            const twinkle = 0.6 + 0.4 * Math.sin(time * particle.twinkleSpeed + particle.phase);
+            const x = particle.x + Math.sin(time * particle.driftSpeed + particle.phase) * particle.driftAmount;
+            ctx.globalAlpha = particle.alpha * twinkle;
+            ctx.drawImage(particle.sprite, x - particle.size / 2, particle.y - particle.size / 2, particle.size, particle.size);
+        });
+        ctx.globalAlpha = 1;
+    }
+
+    let lastFrame = performance.now();
+
+    function frame(now) {
+        const delta = Math.min((now - lastFrame) / 1000, 0.05);
+        lastFrame = now;
+
+        if (!reducedMotion.matches) {
+            particles.forEach((particle) => {
+                particle.y -= particle.speed * delta;
+                if (particle.y < -particle.size) Object.assign(particle, createParticle(height + particle.size));
+            });
+        }
+
+        draw(reducedMotion.matches ? 0 : now / 1000);
+        requestAnimationFrame(frame);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    requestAnimationFrame(frame);
+})();
+
 const projects = [
     {
         title: "Tycoon Secrets",
@@ -64,4 +167,4 @@ function renderProject(project) {
         </article>`;
 }
 
-gameGrid.innerHTML = projects.map(renderProject).join("");
+if (gameGrid) gameGrid.innerHTML = projects.map(renderProject).join("");
