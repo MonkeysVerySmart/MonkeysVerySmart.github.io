@@ -381,6 +381,68 @@ ul.win-body { padding-left: 36px; line-height: 1.7; }
 .game-info h3 { margin: 0 0 8px; font-size: 1.2rem; color: #1e1b4b; }
 .game-info p { color: #5b5480; font-size: .9rem; line-height: 1.5; margin: 0 0 18px; }
 
+.game-summary { margin: 0 0 22px; }
+.game-summary .game-stats { margin: 3px 0 0; padding: 6px; }
+.game-summary .game-stat dd { font-size: 1.3rem; }
+
+.game-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 3px;
+  margin: 0 0 16px;
+}
+
+.game-stat {
+  padding: 4px 6px;
+  background: #ece8fb;
+  box-shadow: inset 1px 1px #8b7fb8, inset -1px -1px #ffffff;
+  min-width: 0;
+}
+
+.game-stat dt { color: #5b5480; font-size: .65rem; text-transform: uppercase; letter-spacing: .04em; }
+.game-stat dd { margin: 2px 0 0; color: #1e1b4b; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Unreleased: blurred, desaturated thumbnail under black redaction bars and a stamp */
+.game-card--unreleased .game-preview img {
+  filter: blur(10px) grayscale(1) contrast(1.2) brightness(.7);
+  transform: scale(1.1);
+}
+
+.game-card--unreleased:hover .game-preview img { transform: scale(1.14); }
+
+.redacted-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9%;
+  padding: 0 6%;
+  pointer-events: none;
+}
+
+.redacted-bars span { display: block; height: 11%; background: #0b0614; box-shadow: 2px 2px 0 rgba(0, 0, 0, .35); }
+.redacted-bars span:nth-child(1) { width: 78%; }
+.redacted-bars span:nth-child(2) { width: 92%; margin-left: 4%; }
+.redacted-bars span:nth-child(3) { width: 60%; margin-left: 18%; }
+
+.redacted-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  padding: 6px 18px;
+  border: 4px solid #e11d48;
+  color: #e11d48;
+  background: rgba(255, 255, 255, .85);
+  font-size: clamp(1.2rem, 4vw, 2.6rem);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.game-card--unreleased .win-progress { margin-bottom: 16px; }
+
 .game-link,
 .game-link:visited {
   display: inline-block;
