@@ -402,6 +402,11 @@ ul.win-body { padding-left: 36px; line-height: 1.7; }
 .game-stat dt { color: #5b5480; font-size: .65rem; text-transform: uppercase; letter-spacing: .04em; }
 .game-stat dd { margin: 2px 0 0; color: #1e1b4b; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Flagship: full-width card above the 2x2 grid */
+.game-card--flagship { grid-column: 1 / -1; }
+.game-card--flagship .game-info h3 { font-size: 1.6rem; }
+.game-card--flagship .game-info p { font-size: 1rem; }
+
 /* Unreleased: blurred, desaturated thumbnail under black redaction bars and a stamp */
 .game-card--unreleased .game-preview img {
   filter: blur(10px) grayscale(1) contrast(1.2) brightness(.7);
