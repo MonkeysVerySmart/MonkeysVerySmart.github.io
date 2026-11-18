@@ -107,7 +107,7 @@ const projects = [
         placeId: 82121046291880,
         universeId: 10435267522,
         description: "???",
-        thumbnailUrl: "images/thumbnails/unreleased.png",
+        thumbnailUrl: null, // shown as TV static instead
         topCcu: null,
         flagship: true,
         unreleased: true,
@@ -268,7 +268,9 @@ async function loadGameStats() {
 function renderProject(project) {
     const robloxUrl = `https://www.roblox.com/games/${project.placeId}`;
     const classes = ["game-card", "win-window", project.flagship && "game-card--flagship", project.unreleased && "game-card--unreleased"].filter(Boolean).join(" ");
-    const thumbnail = project.thumbnailUrl
+    const thumbnail = project.unreleased
+        ? `<canvas class="tv-static" width="160" height="90" aria-hidden="true"></canvas>`
+        : project.thumbnailUrl
         ? `<img src="${project.thumbnailUrl}" alt="${escapeHtml(project.title)} thumbnail" onerror="handleThumbnailError(this)">`
         : `<div class="preview-placeholder" aria-hidden="true">ROBLOX</div>`;
     const stats = project.unreleased
@@ -284,7 +286,7 @@ function renderProject(project) {
             <div class="game-body">
                 <a class="game-preview" data-universe-id="${project.universeId}" href="${robloxUrl}" target="_blank" rel="noopener noreferrer">
                     ${thumbnail}
-                    ${project.unreleased ? `<span class="redacted-bars" aria-hidden="true"><span></span><span></span><span></span></span><span class="redacted-stamp">Redacted</span>` : ""}
+                    ${project.unreleased ? `<span class="redacted-stamp">Redacted</span>` : ""}
                 </a>
                 <div class="game-info">
                     <h3>${escapeHtml(project.title)}</h3>
@@ -296,6 +298,29 @@ function renderProject(project) {
         </article>`;
 }
 
+// Low-res noise scaled up with CSS; ~20fps is enough to read as static and stays cheap.
+function startTvStatic(canvas) {
+    const context = canvas.getContext("2d");
+    const frame = context.createImageData(canvas.width, canvas.height);
+    const pixels = new Uint32Array(frame.data.buffer);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let last = 0;
+
+    function draw(time) {
+        if (time - last >= 50) {
+            last = time;
+            for (let i = 0; i < pixels.length; i++) {
+                const shade = (Math.random() * 255) | 0;
+                pixels[i] = 0xff000000 | (shade << 16) | (shade << 8) | shade;
+            }
+            context.putImageData(frame, 0, 0);
+        }
+        if (!reduceMotion) requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+}
+
 const gameSummary = document.querySelector("#game-summary");
 const releasedCount = projects.filter((project) => !project.unreleased).length;
 
@@ -304,5 +329,6 @@ if (gameGrid) {
     if (gameSummary) gameSummary.innerHTML = `
         <div class="win-titlebar"><span>Combined stats across ${releasedCount} released games</span><div class="win-controls"><span>_</span><span>□</span><span>×</span></div></div>
         ${renderStatList(SUMMARY_FIELDS)}`;
+    gameGrid.querySelectorAll(".tv-static").forEach(startTvStatic);
     loadGameStats();
 }

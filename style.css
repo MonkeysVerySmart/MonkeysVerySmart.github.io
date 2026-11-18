@@ -407,29 +407,22 @@ ul.win-body { padding-left: 36px; line-height: 1.7; }
 .game-card--flagship .game-info h3 { font-size: 1.6rem; }
 .game-card--flagship .game-info p { font-size: 1rem; }
 
-/* Unreleased: blurred, desaturated thumbnail under black redaction bars and a stamp */
-.game-card--unreleased .game-preview img {
-  filter: blur(10px) grayscale(1) contrast(1.2) brightness(.7);
-  transform: scale(1.1);
+/* Unreleased: animated TV static with a redacted stamp */
+.tv-static {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  filter: contrast(1.3) brightness(.85);
 }
 
-.game-card--unreleased:hover .game-preview img { transform: scale(1.14); }
-
-.redacted-bars {
+.game-card--unreleased .game-preview::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 9%;
-  padding: 0 6%;
+  inset: 2px;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .25) 0 2px, transparent 2px 4px);
   pointer-events: none;
 }
-
-.redacted-bars span { display: block; height: 11%; background: #0b0614; box-shadow: 2px 2px 0 rgba(0, 0, 0, .35); }
-.redacted-bars span:nth-child(1) { width: 78%; }
-.redacted-bars span:nth-child(2) { width: 92%; margin-left: 4%; }
-.redacted-bars span:nth-child(3) { width: 60%; margin-left: 18%; }
 
 .redacted-stamp {
   position: absolute;
@@ -444,6 +437,7 @@ ul.win-body { padding-left: 36px; line-height: 1.7; }
   letter-spacing: .2em;
   text-transform: uppercase;
   pointer-events: none;
+  z-index: 1;
 }
 
 .game-card--unreleased .win-progress { margin-bottom: 16px; }
